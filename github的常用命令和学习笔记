@@ -1,0 +1,44 @@
+github常用命令以及学习笔记
+	$ cd ~/.ssh /*检查计算机是否有ssh密匙*/
+	如果没有提示"No such file or directory"说明你电脑里面已经使用过git,可以执行以下操作清理电脑里面原有的ssh密匙
+	$ ls
+	config id_rsa id_rsa.pub known_hosts
+	$ mkdir key_backup
+	$ cp id_rsa* key_backup
+	$ rm id_rsa*
+	获得密匙
+	$ ssh-keygen -t rsa -C "miyuillya@gmail.com" /*填写你自己的github邮箱地址,之后一直按"enter"即可*/
+	打开本地的..\.ssh\id_rsa.pub文件,此文件里面的内容是刚才生成的密匙
+	登录github.com,点击右上角的Setting--->SSH and GPG keys--->New SSH key--->Key 将你刚才打开的id_rsa.pub文件里面的内容复制到Key文本框中
+	打开git bash 测试是否连接成功
+	$ ssh -T git@github.com
+	如果提示"Hi miyuillya! You've successfully authenticated, but GitHub does not provide shell access.
+	",说明已经连接成功.
+	设置用户信息
+	$ git config --global user.name "miyuillya" /*给自己起一个用户名*/
+	$ git config --global user.email "miyuillya@gmail" /*填写自己的邮箱*/
+	创建一个项目
+	回到github首页,点击右上角的New repository 创建一个仓库 例如 Repository name:c  
+	打开git bash 创建一个相同的项目
+	$ mkdir ~/desktop/c			/*在桌面上创建一个c的文件夹,即名为c的项目*/
+	$ cd ~/desktop/c 			/*进入到c文件夹中*/
+	$ git init					/*初始化*/
+	$ touch README 				
+	$ git add README 			/*更新README*/
+	$ git commit -m "c"			/*提交README 并且附加注释信息"c"*/
+	$ git remote add origin git@github.com:miyuillya/c.git /*连接远程的github上名为c的项目(仓库)*/
+	$ git push -u origin master /*将本地的项目更新到github项目(仓库)上去*/
+	现在查看github上面的c项目(仓库),便可发现已经将本地README文件更新上来了.
+	可能会出现的错误
+	1.在执行
+	$ git remote add origin git@github.com:miyuillya/c.git
+	错误提示:fatal:remote origin already exists
+	解决办法:
+	$ git remote rm origin
+	然后再执行:$ git remote add origin git@github.com:miyuillya/c.git就不会报错了
+	2.在执行
+	$ git push -u origin master 
+	错误提示:error:failed to push som refs to ......
+	解决办法:
+	$ git pull origin master /*前提是先把远程服务器github上面的项目clone下来,再push上去*/
+	
